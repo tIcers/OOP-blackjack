@@ -6,7 +6,7 @@ values = {'Two': 2, 'Three': 3, 'Four': 4, 'Five': 5, 'Six': 6, 'Seven': 7, 'Eig
           'Jack': 10,
           'Queen': 10, 'King': 10, 'Ace': 11}
 
-playing = True
+playing = True # frag for later while loop
 
 
 class Card:
@@ -39,16 +39,35 @@ class Deck:
         return single_card
 
 
-test_deck = Deck()
-test_deck.shuffle()
-print(test_deck)
-
-
 class Hand:
     def __init__(self):
-        self.card = []
+        self.cards = []
         self.value = 0
-        self.aces = 0
+        self.aces = 0  # ace has special cases, could be one or eleven so keep track
 
     def add_card(self, card):
-        pass
+        # from Deck.deal() ==> single_card(suit,rank)
+        self.cards.append(card)
+        self.value += values[card.rank]  # check if all value is above 21 or not.
+        # Add value by getting values which is associated with number(in this case value) and add it
+
+        # track aces
+
+        if card.rank == "Ace":
+            self.aces += 1
+
+    def adjust_for_ace(self):
+
+        # if the total is greater than 21 ace will be 10 and substract ace one card
+        while self.value > 21 and self.aces:  # using number as an integer but truthy and falsy way
+            self.value -= 10
+            self.aces -= 1
+
+
+test_deck = Deck()
+test_deck.shuffle()
+test_player = Hand()  # initialize class # define player
+pulled_card = test_deck.deal()
+print(pulled_card)
+test_player.add_card(pulled_card)
+print(f"test player value:{test_player.value}")
